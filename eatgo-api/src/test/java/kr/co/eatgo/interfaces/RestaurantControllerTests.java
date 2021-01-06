@@ -26,7 +26,7 @@ class RestaurantControllerTests {
                         StringContains.containsString("\"name\":\"Bob Zip\"")
                 ))
                 .andExpect(content().string(
-                        StringContains.containsString("\"id\":\"1004\"")
+                        StringContains.containsString("\"id\":1004")
                 ));
     }
 }
