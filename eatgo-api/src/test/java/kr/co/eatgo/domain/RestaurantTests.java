@@ -12,5 +12,12 @@ public class RestaurantTests {
         Restaurant restaurant = new Restaurant("Bob Zip", "Seoul");
         assertThat(restaurant.getName(),is("Bob Zip"));
     }
+    @Test
+    @DisplayName("식당 정보 받기")
+    public void information(){
+        Restaurant restaurant = new Restaurant("Bob Zip","Seoul");
+
+        assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
+    }
 
 }
