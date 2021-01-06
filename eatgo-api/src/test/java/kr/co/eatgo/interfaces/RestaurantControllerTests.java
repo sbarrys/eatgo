@@ -29,4 +29,16 @@ class RestaurantControllerTests {
                         StringContains.containsString("\"id\":1004")
                 ));
     }
+
+    @Test
+    public void detail() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/restaurants/2004"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        StringContains.containsString("\"id\":2004")
+                ))
+                .andExpect(content().string(
+                        StringContains.containsString("\"name\":\"Cyber Food\"")
+                ));
+    }
 }
