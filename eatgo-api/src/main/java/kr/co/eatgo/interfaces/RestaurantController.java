@@ -14,7 +14,11 @@ import java.util.List;
 @RestController
 public class RestaurantController {
 
-    private RestaurantRepository restaurantRepository= new RestaurantRepository();
+    private RestaurantRepository restaurantRepository;
+
+    public RestaurantController(RestaurantRepository restaurantRepository){
+        this.restaurantRepository = restaurantRepository;
+    }
     @GetMapping("restaurants")
     public List<Restaurant> list(){
         List<Restaurant> restaurants = restaurantRepository.findAll();
