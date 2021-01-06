@@ -9,7 +9,7 @@ public class RestaurantTests {
     @Test
     @DisplayName("식당이름은 BobZip")
     public void creation(){
-        Restaurant restaurant = new Restaurant();
+        Restaurant restaurant = new Restaurant("Bob Zip", "Seoul");
         assertThat(restaurant.getName(),is("Bob Zip"));
     }
 
