@@ -1,5 +1,7 @@
 package kr.co.eatgo.interfaces;
 
+import kr.co.eatgo.domain.MenuItemRepository;
+import kr.co.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.eatgo.domain.RestaurantRepositoryImpl;
 import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ class RestaurantControllerTests {
     //테스트에서는 우리가 사용할 레포지토리 DI의존성 주입을 직접해주어야한다.
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepositoryImpl restaurantRepository;
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepository menuItemRepository;
     @Test
     public void list() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
@@ -36,6 +40,15 @@ class RestaurantControllerTests {
 
     @Test
     public void detail() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        StringContains.containsString("\"name\":\"Bob Zip\"")
+                ))
+                .andExpect(content().string(
+                        StringContains.containsString("\"id\":1004")
+                ));
+
         mvc.perform(MockMvcRequestBuilders.get("/restaurants/2004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -43,6 +56,11 @@ class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         StringContains.containsString("\"name\":\"Cyber Food\"")
+                ))
+                .andExpect(content().string(
+                        StringContains.containsString("Kimchi")
                 ));
+
+
     }
 }
