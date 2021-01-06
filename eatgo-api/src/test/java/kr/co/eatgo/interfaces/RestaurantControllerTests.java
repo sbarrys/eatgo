@@ -1,10 +1,12 @@
 package kr.co.eatgo.interfaces;
 
+import kr.co.eatgo.domain.RestaurantRepository;
 import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,7 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RestaurantControllerTests {
     @Autowired
     private MockMvc mvc;
-
+    //테스트에서는 우리가 사용할 레포지토리 DI의존성 주입을 직접해주어야한다. 
+    @SpyBean
+    private RestaurantRepository restaurantRepository;
     @Test
     public void list() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
