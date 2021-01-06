@@ -9,13 +9,13 @@ public class RestaurantTests {
     @Test
     @DisplayName("식당이름은 BobZip")
     public void creation(){
-        Restaurant restaurant = new Restaurant("Bob Zip", "Seoul");
+        Restaurant restaurant = new Restaurant(1004L,"Bob Zip", "Seoul");
         assertThat(restaurant.getName(),is("Bob Zip"));
     }
     @Test
     @DisplayName("식당 정보 받기")
     public void information(){
-        Restaurant restaurant = new Restaurant("Bob Zip","Seoul");
+        Restaurant restaurant = new Restaurant(1004L,"Bob Zip","Seoul");
 
         assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
     }
