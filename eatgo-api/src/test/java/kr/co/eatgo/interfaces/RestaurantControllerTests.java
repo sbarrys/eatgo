@@ -1,5 +1,6 @@
 package kr.co.eatgo.interfaces;
 
+import kr.co.eatgo.application.RestaurantService;
 import kr.co.eatgo.domain.MenuItemRepository;
 import kr.co.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.eatgo.domain.RestaurantRepositoryImpl;
@@ -21,7 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RestaurantControllerTests {
     @Autowired
     private MockMvc mvc;
+
     //테스트에서는 우리가 사용할 레포지토리 DI의존성 주입을 직접해주어야한다.
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepositoryImpl restaurantRepository;
     @SpyBean(MenuItemRepositoryImpl.class)
