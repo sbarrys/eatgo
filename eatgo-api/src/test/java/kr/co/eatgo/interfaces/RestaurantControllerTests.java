@@ -22,16 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RestaurantControllerTests {
     @Autowired
     private MockMvc mvc;
-
-    //테스트에서는 우리가 사용할 레포지토리 DI의존성 주입을 직접해주어야한다.
-    @SpyBean(RestaurantService.class)
+    //@spyBean 으로 진짜 Service객체를 넣어주고 ,  Service를 이루고 있는 RestaurantRepository나 menuItemRepository 들을 또
+    //SpyBean으로 생성해줘야했었다. 하지만, 이제는 가짜 객체인 @MockBean을 사용할 것이다.
+    @MockBean//가짜이기 때문에 각 @Test 에서 given().willReturn() 으로 원하는 커스텀리턴값을 만들어줘야한다.
     private RestaurantService restaurantService;
-    @SpyBean(RestaurantRepositoryImpl.class)
-    private RestaurantRepositoryImpl restaurantRepository;
-    @SpyBean(MenuItemRepositoryImpl.class)
-    private MenuItemRepository menuItemRepository;
+
     @Test
     public void list() throws Exception {
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(new Restaurant(1004L,"Bob Zip","Seoul"));
+
+        given(restaurantService.getAllRestaurants()).willReturn(restaurants);
         mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
