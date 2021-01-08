@@ -1,19 +1,24 @@
 package kr.co.eatgo.interfaces;
 
 import kr.co.eatgo.application.RestaurantService;
-import kr.co.eatgo.domain.MenuItemRepository;
-import kr.co.eatgo.domain.MenuItemRepositoryImpl;
-import kr.co.eatgo.domain.RestaurantRepositoryImpl;
+import kr.co.eatgo.domain.*;
 import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,37 +38,32 @@ class RestaurantControllerTests {
         restaurants.add(new Restaurant(1004L,"Bob Zip","Seoul"));
 
         given(restaurantService.getAllRestaurants()).willReturn(restaurants);
-        mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
+        mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        StringContains.containsString("\"name\":\"Bob Zip\"")
+                        containsString("\"name\":\"Bob Zip\"")
                 ))
                 .andExpect(content().string(
-                        StringContains.containsString("\"id\":1004")
+                        containsString("\"id\":1004")
                 ));
     }
 
     @Test
     public void detail() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/restaurants"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        StringContains.containsString("\"name\":\"Bob Zip\"")
-                ))
-                .andExpect(content().string(
-                        StringContains.containsString("\"id\":1004")
-                ));
+        Restaurant restaurant=new Restaurant(2004L,"ABC Zip","Seoul");
+        restaurant.addMenuItem(new MenuItem("Kimchi"));
+        given(restaurantService.getRestaurantById(2004L)).willReturn(restaurant);
 
-        mvc.perform(MockMvcRequestBuilders.get("/restaurants/2004"))
+        mvc.perform(get("/restaurants/2004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        StringContains.containsString("\"id\":2004")
+                        containsString("\"id\":2004")
                 ))
                 .andExpect(content().string(
-                        StringContains.containsString("\"name\":\"Cyber Food\"")
+                        containsString("\"name\":\"ABC Zip\"")
                 ))
                 .andExpect(content().string(
-                        StringContains.containsString("Kimchi")
+                        containsString("Kimchi")
                 ));
 
 
