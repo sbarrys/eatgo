@@ -13,12 +13,8 @@ import java.util.List;
 @RestController
 public class RestaurantController {
     //구현체를 직접 주입하는 것이 아닌 인터페이스를 주입해준다. 이것이 DI 로 부터 얻을 수 있는 장점이다.
-    private RestaurantRepository restaurantRepository;
-    private MenuItemRepository menuItemRepository;
     private RestaurantService restaurantService;
-    public RestaurantController(RestaurantRepository restaurantRepository,MenuItemRepository menuItemRepository,RestaurantService restaurantService){
-        this.restaurantRepository = restaurantRepository;
-        this.menuItemRepository = menuItemRepository;
+    public RestaurantController(RestaurantService restaurantService){
         this.restaurantService= restaurantService;
     }
     @GetMapping("restaurants")
