@@ -2,25 +2,23 @@ package kr.co.eatgo.interfaces;
 
 import kr.co.eatgo.application.RestaurantService;
 import kr.co.eatgo.domain.*;
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) //get 을 누구한테 요청할것인가.  Spring Runner에게 요청할 것이다.
 @WebMvcTest(RestaurantController.class) // 컨트롤러 테스트한다는 것
@@ -65,7 +63,19 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("Kimchi")
                 ));
+    }
 
+    @Test
+    public void create() throws Exception {
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"God Zip\",\"address\":\"Busan\"}"))
+
+                .andExpect(status().isOk())
+                .andExpect(header().string("location","restaurants/3004"))
+                .andExpect(content().string("{}"));
+
+        verify(restaurantService).addRestaurant(any());//생성된 mock은 자신의 모든 행동을 기억하는데, verify()를 이용해서 원하는 메소드가 특정 조건으로 실행되었는지를 검증할 수 있다.
 
     }
 }
