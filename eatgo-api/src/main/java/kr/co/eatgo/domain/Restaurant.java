@@ -2,12 +2,18 @@ package kr.co.eatgo.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+@Entity
 public class Restaurant {
     private  String name;
     private  String address;
+    @Id
     private  Long id;
+    @Transient// 임시로 사용하는 변수에요~
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
     @Autowired
     public Restaurant(Long id,String name, String address){

@@ -35,7 +35,7 @@ class RestaurantServiceTests {
         menuItems.add(new MenuItem("Kimchi"));
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
         given(restaurantRepository.findAll()).willReturn(restaurants);
-        given(restaurantRepository.findById(1004L)).willReturn(restaurant);
+        given(restaurantRepository.findById(1004L)).willReturn(java.util.Optional.of(restaurant));
 
 
         //@Mock으로 했기때문에 구현하지 않아도됨
