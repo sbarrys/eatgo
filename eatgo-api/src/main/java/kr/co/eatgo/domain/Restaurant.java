@@ -9,7 +9,6 @@ public class Restaurant {
     private  String address;
     private  Long id;
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
-
     @Autowired
     public Restaurant(Long id,String name, String address){
         this.id = id;
@@ -20,6 +19,11 @@ public class Restaurant {
     public Restaurant() {
     }
 
+    public Restaurant(String name, String address) {
+        this.name= name;
+        this.address = address;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -27,7 +31,9 @@ public class Restaurant {
     public Long getId() {
         return id;
     }
-
+    public void setId(long id) {
+        this.id =id;
+    }
     public String getName() {
         return name;
     }
@@ -47,4 +53,6 @@ public class Restaurant {
             addMenuItem(menuItem);
         }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package kr.co.eatgo.application;
 
+import ch.qos.logback.core.pattern.util.RestrictedEscapeUtil;
 import kr.co.eatgo.domain.*;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 class RestaurantServiceTests {
@@ -60,5 +62,16 @@ class RestaurantServiceTests {
 
         Restaurant restaurant = restaurants.get(0);
         assertThat(restaurant.getId(),is(1004L));
+    }
+
+    @Test
+    public void addRestaurant(){
+        Restaurant restaurant = new Restaurant("New Bob Zip" ,"Busan");
+        Restaurant saved = new Restaurant(3004L,"New Bob Zip" ,"Busan");
+        given(restaurantRepository.save(any())).willReturn(saved);
+
+        Restaurant createdRestaurant = restaurantService.addRestaurant(restaurant);
+
+        assertThat(createdRestaurant.getId(),is(3004L));
     }
 }
