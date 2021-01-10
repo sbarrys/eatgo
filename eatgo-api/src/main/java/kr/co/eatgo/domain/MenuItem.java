@@ -1,8 +1,15 @@
 package kr.co.eatgo.domain;
 
-public class MenuItem {
-    private final String name;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
+public class MenuItem {
+    @Id
+    private  Long id;
+    private Long restaurantId;
+    private  String name;
+    public MenuItem(){};
     public MenuItem(String name) {
         this.name= name;
     }

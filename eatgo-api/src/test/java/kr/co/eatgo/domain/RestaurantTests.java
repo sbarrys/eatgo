@@ -17,7 +17,7 @@ public class RestaurantTests {
     public void information(){
         Restaurant restaurant = new Restaurant(1004L,"Bob Zip","Seoul");
 
-        assertThat(restaurant.getInformation(), is("Bob Zip in Seoul"));
+        assertThat(restaurant.getInformation(), is("Bob Zip in Seoul[]"));
     }
 
 }
