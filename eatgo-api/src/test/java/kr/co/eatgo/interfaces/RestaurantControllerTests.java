@@ -71,8 +71,8 @@ class RestaurantControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"God Zip\",\"address\":\"Busan\"}"))
 
-                .andExpect(status().isOk())
-                .andExpect(header().string("location","restaurants/3004"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location","/restaurants/3004"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());//생성된 mock은 자신의 모든 행동을 기억하는데, verify()를 이용해서 원하는 메소드가 특정 조건으로 실행되었는지를 검증할 수 있다.
