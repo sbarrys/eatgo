@@ -1,6 +1,7 @@
 package kr.co.eatgo.application;
 
 import kr.co.eatgo.domain.*;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -68,5 +70,17 @@ class RestaurantServiceTests {
         Restaurant createdRestaurant = restaurantService.addRestaurant(restaurant);
 
         assertThat(createdRestaurant.getId(),is(3004L));
+    }
+    @Test
+    public void updateRestaurant(){
+
+        Restaurant restaurant = new Restaurant(1004L, "ABC Zip", "Seoul");
+
+        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
+
+        restaurantService.updateRestaurant(1004L,"New Bob Zip", "Seoul");
+
+        assertThat(restaurant.getName(),is("New Bob Zip"));
+        assertThat(restaurant.getAddress(),is("Seoul"));
     }
 }

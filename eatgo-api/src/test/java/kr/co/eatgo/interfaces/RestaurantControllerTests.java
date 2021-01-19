@@ -10,18 +10,21 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) //get 을 누구한테 요청할것인가.  Spring Runner에게 요청할 것이다.
-@WebMvcTest(RestaurantController.class) // 컨트롤러 테스트한다는 것
+@WebMvcTest(RestaurantController.class)
+        // 컨트롤러 테스트한다는 것
 class RestaurantControllerTests {
     @Autowired
     private MockMvc mvc;
@@ -67,15 +70,32 @@ class RestaurantControllerTests {
 
     @Test
     public void create() throws Exception {
+        given(restaurantService.addRestaurant(any())).will(invocation -> {
+            Restaurant restaurant= invocation.getArgument(0);
+            return  new Restaurant(1004L,restaurant.getName(),restaurant.getAddress());
+        });
         mvc.perform(post("/restaurants")
+                //정보넘겨주기 ( @RequestBody 로 받는다)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"God Zip\",\"address\":\"Busan\"}"))
 
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location","/restaurants/3004"))
+                .andExpect(header().string("location", "/restaurants/1004"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());//생성된 mock은 자신의 모든 행동을 기억하는데, verify()를 이용해서 원하는 메소드가 특정 조건으로 실행되었는지를 검증할 수 있다.
+
+    }
+
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/restaurants/1004") //@PatchMapping("/{id}")   +  매개변수 @PathVariable 로 받는다.
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Bob Zip2\",\"address\":\"Cheongju\"}"))
+                .andExpect(status().isOk());
+
+        verify(restaurantService.updateRestaurant(1004L,"Bob Zip2","Cheongju"));
+////        .andExpect(content().string("{\"name\":\"Bob Zip2\",\"address\":\"Cheongju"));
 
     }
 }
