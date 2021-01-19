@@ -12,6 +12,8 @@ import javax.xml.ws.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
+
 @RequestMapping("restaurants")
 @RestController
 public class RestaurantController {
@@ -36,11 +38,18 @@ public class RestaurantController {
     public ResponseEntity<?> create(@RequestBody Restaurant body) throws URISyntaxException {
         String name= body.getName();
         String address = body.getAddress();
-        Restaurant restaurant = new Restaurant(name,address);
-        restaurantService.addRestaurant(restaurant);
+
+        Restaurant restaurant = restaurantService.addRestaurant(new Restaurant(name,address));
         URI location = new URI("/restaurants/"+restaurant.getId());
         return ResponseEntity.created(location).body("{}");
+    }
+    @PatchMapping("/{id}")
+    public String update(@PathVariable("id") Long id,@RequestBody Restaurant body) throws URISyntaxException {
+        String name = body.getName();
+        String address= body.getAddress();
 
-
+        Restaurant restaurant= restaurantService.updateRestaurant(id,name,address);
+//        URI location = new URI("/restaurants/"+restaurant.getId());
+        return "{}";
     }
 }

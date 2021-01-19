@@ -1,16 +1,20 @@
 package kr.co.eatgo.application;
 
-import com.sun.org.apache.regexp.internal.RE;
+
 import kr.co.eatgo.domain.MenuItem;
 import kr.co.eatgo.domain.MenuItemRepository;
 import kr.co.eatgo.domain.Restaurant;
 import kr.co.eatgo.domain.RestaurantRepository;
+import lombok.extern.log4j.Log4j;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class RestaurantService {
     private MenuItemRepository menuItemRepository;
     private RestaurantRepository restaurantRepository;
@@ -35,5 +39,10 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
+    }
+    public Restaurant updateRestaurant(Long id , String name, String address){
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+        restaurant.updateInformation(name,address);
+        return restaurant;
     }
 }
