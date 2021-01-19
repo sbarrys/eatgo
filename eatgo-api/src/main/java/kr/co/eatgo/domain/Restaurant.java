@@ -1,5 +1,8 @@
 package kr.co.eatgo.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
@@ -8,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 public class Restaurant {
     private  String name;
@@ -24,26 +30,10 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Restaurant() {
-    }
-
     public Restaurant(String name, String address) {
+        this.id=1004L;
         this.name= name;
         this.address = address;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id =id;
-    }
-    public String getName() {
-        return name;
     }
 
     public String getInformation() {
@@ -63,4 +53,9 @@ public class Restaurant {
     }
 
 
+    public void updateInformation(String name, String address) {
+        this.name= name;
+        this.address =address;
+
+    }
 }
