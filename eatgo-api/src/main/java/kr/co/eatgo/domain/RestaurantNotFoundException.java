@@ -1,8 +1,8 @@
 package kr.co.eatgo.domain;
 
-public class RestaurantaNotFoundException extends RuntimeException {
+public class RestaurantNotFoundException extends RuntimeException {
 
-    public RestaurantaNotFoundException(Long id){
+    public RestaurantNotFoundException(Long id){
          super(id+" is NOT FOUND");
     }
 
