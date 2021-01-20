@@ -1,8 +1,6 @@
 package kr.co.eatgo.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
@@ -14,27 +12,18 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 public class Restaurant {
-    private  String name;
-    private  String address;
     @Id
     @GeneratedValue
     private  Long id;
+    private  String name;
+    private  String address;
+
     @Transient// 임시로 사용하는 변수에요~
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
-    @Autowired
-    public Restaurant(Long id,String name, String address){
-        this.id = id;
-        this.name = name;
-        this.address = address;
-    }
-
-    public Restaurant(String name, String address) {
-        this.id=1004L;
-        this.name= name;
-        this.address = address;
-    }
 
     public String getInformation() {
         return name + " in " + address+menuItems;
@@ -47,6 +36,7 @@ public class Restaurant {
     }
 
     public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = new ArrayList<>();
         for( MenuItem menuItem: menuItems){
             addMenuItem(menuItem);
         }

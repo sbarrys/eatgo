@@ -31,7 +31,12 @@ class RestaurantServiceTests {
         MockitoAnnotations.initMocks(this); // @Mock 어노테이션이 있는 것들을 초기화 해줌
 
         List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant = new Restaurant(1004L,"Bob Zip" , "Seoul");
+
+        Restaurant restaurant= Restaurant.builder()
+                .name("Bob Zip")
+                .address("Seoul")
+                .id(1004L).build();
+
         restaurants.add(restaurant);
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem("Kimchi"));
@@ -63,8 +68,9 @@ class RestaurantServiceTests {
 
     @Test
     public void addRestaurant(){
-        Restaurant restaurant = new Restaurant("New Bob Zip" ,"Busan");
-        Restaurant saved = new Restaurant(3004L,"New Bob Zip" ,"Busan");
+
+        Restaurant restaurant = Restaurant.builder().name("New Bob Zip").address("Busan").build();
+        Restaurant saved = Restaurant.builder().id(3004L).name("New Bob Zip").address("Busan").build();
         given(restaurantRepository.save(any())).willReturn(saved);
 
         Restaurant createdRestaurant = restaurantService.addRestaurant(restaurant);
@@ -74,7 +80,10 @@ class RestaurantServiceTests {
     @Test
     public void updateRestaurant(){
 
-        Restaurant restaurant = new Restaurant(1004L, "ABC Zip", "Seoul");
+        Restaurant restaurant= Restaurant.builder()
+                .name("ABC Zip")
+                .address("Seoul")
+                .id(1004L).build();
 
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
 

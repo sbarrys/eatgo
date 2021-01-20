@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,11 @@ class RestaurantControllerTests {
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L,"Bob Zip","Seoul"));
-
+        Restaurant restaurant= Restaurant.builder()
+                .name("Bob Zip")
+                .address("Seoul")
+                .id(1004L).build();
+        restaurants.add(restaurant);
         given(restaurantService.getAllRestaurants()).willReturn(restaurants);
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
@@ -51,9 +55,19 @@ class RestaurantControllerTests {
 
     @Test
     public void detail() throws Exception {
-        Restaurant restaurant=new Restaurant(2004L,"ABC Zip","Seoul");
-        restaurant.addMenuItem(new MenuItem("Kimchi"));
+        Restaurant restaurant= Restaurant.builder()
+                .name("ABC Zip")
+                .address("Seoul")
+                .id(2004L).build();
+        restaurant.setMenuItems(Arrays.asList(new MenuItem("Kimchi")));
+
+        Restaurant restaurant2 = Restaurant.builder()
+                .id(1004L)
+                .name("New Zip")
+                .address("Busan").build();
+
         given(restaurantService.getRestaurantById(2004L)).willReturn(restaurant);
+        given(restaurantService.getRestaurantById(1004L)).willReturn(restaurant2);
 
         mvc.perform(get("/restaurants/2004"))
                 .andExpect(status().isOk())
@@ -72,7 +86,8 @@ class RestaurantControllerTests {
     public void create() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant= invocation.getArgument(0);
-            return  new Restaurant(1004L,restaurant.getName(),restaurant.getAddress());
+            restaurant.setId(1004L);
+            return   restaurant;
         });
         mvc.perform(post("/restaurants")
                 //정보넘겨주기 ( @RequestBody 로 받는다)
@@ -94,7 +109,7 @@ class RestaurantControllerTests {
                 .content("{\"name\":\"Bob Zip2\",\"address\":\"Cheongju\"}"))
                 .andExpect(status().isOk());
 
-        verify(restaurantService.updateRestaurant(1004L,"Bob Zip2","Cheongju"));
+        verify(restaurantService).updateRestaurant(1004L,"Bob Zip2","Cheongju");
 ////        .andExpect(content().string("{\"name\":\"Bob Zip2\",\"address\":\"Cheongju"));
 
     }
