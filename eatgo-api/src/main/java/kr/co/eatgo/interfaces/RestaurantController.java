@@ -6,8 +6,10 @@ import kr.co.eatgo.domain.MenuItemRepository;
 import kr.co.eatgo.domain.Restaurant;
 import kr.co.eatgo.domain.RestaurantRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,7 +37,7 @@ public class RestaurantController {
         return restaurant;
     }
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Restaurant body) throws URISyntaxException {
+    public ResponseEntity<?> create(@Valid @RequestBody Restaurant body) throws URISyntaxException {
         String name= body.getName();
         String address = body.getAddress();
 
@@ -44,7 +46,7 @@ public class RestaurantController {
         return ResponseEntity.created(location).body("{}");
     }
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id,@RequestBody Restaurant body) throws URISyntaxException {
+    public String update(@PathVariable("id") Long id,@Valid @RequestBody Restaurant body) throws URISyntaxException {
         String name = body.getName();
         String address= body.getAddress();
 

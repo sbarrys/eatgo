@@ -83,6 +83,16 @@ class RestaurantControllerTests {
     }
 
     @Test
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/restaurants")
+                //정보넘겨주기 ( @RequestBody 로 받는다)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+
+                .andExpect(status().isBadRequest());
+
+    }
+    @Test
     public void create() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant= invocation.getArgument(0);
@@ -103,6 +113,14 @@ class RestaurantControllerTests {
     }
 
     @Test
+    public void updateWithInvalidData() throws Exception {
+        mvc.perform(patch("/restaurants/1004") //@PatchMapping("/{id}")   +  매개변수 @PathVariable 로 받는다.
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest());
+
+    }
+    @Test
     public void update() throws Exception {
         mvc.perform(patch("/restaurants/1004") //@PatchMapping("/{id}")   +  매개변수 @PathVariable 로 받는다.
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,4 +131,5 @@ class RestaurantControllerTests {
 ////        .andExpect(content().string("{\"name\":\"Bob Zip2\",\"address\":\"Cheongju"));
 
     }
+
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 @Setter
@@ -19,7 +21,9 @@ public class Restaurant {
     @Id
     @GeneratedValue
     private  Long id;
+    @NotEmpty
     private  String name;
+    @NotEmpty
     private  String address;
 
     @Transient// 임시로 사용하는 변수에요~
