@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -55,6 +56,18 @@ class RestaurantServiceTests {
     public void getRestaurant(){
         Restaurant restaurant= restaurantService.getRestaurantById(1004L);
         assertThat(restaurant.getId(),is(1004L));
+
+    }
+
+    @Test
+    public void getRestaurantWithNotFound(){
+
+
+        Throwable exception = assertThrows(RestaurantNotFoundException.class, () -> {
+            restaurantService.getRestaurantById(404L);
+        });
+
+
 
     }
 
