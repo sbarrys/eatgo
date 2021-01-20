@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -80,6 +79,12 @@ class RestaurantControllerTests {
                 .andExpect(content().string(
                         containsString("Kimchi")
                 ));
+    }
+    @Test
+    public void detailWithNotFound() throws Exception {
+        given(restaurantService.getRestaurantById(404L)).willThrow(new RestaurantNotFoundException());
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
