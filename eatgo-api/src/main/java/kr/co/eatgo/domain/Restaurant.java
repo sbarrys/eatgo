@@ -26,7 +26,7 @@ public class Restaurant {
     private  String address;
 
     @Transient// 임시로 사용하는 변수에요~
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)// Null 이 아닐때만 응답JSON에 넣어줘라.
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
     public String getInformation() {
