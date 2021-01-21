@@ -1,7 +1,9 @@
 package kr.co.eatgo.interfaces;
 
 import kr.co.eatgo.application.RestaurantService;
-import kr.co.eatgo.domain.*;
+import kr.co.eatgo.domain.MenuItem;
+import kr.co.eatgo.domain.Restaurant;
+import kr.co.eatgo.domain.RestaurantNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ class RestaurantControllerTests {
                 .name("ABC Zip")
                 .address("Seoul")
                 .id(2004L).build();
-        restaurant.setMenuItems(Arrays.asList(new MenuItem("Kimchi")));
+        restaurant.setMenuItems(Arrays.asList(MenuItem.builder().name("Kimchi").build()));
 
         Restaurant restaurant2 = Restaurant.builder()
                 .id(1004L)

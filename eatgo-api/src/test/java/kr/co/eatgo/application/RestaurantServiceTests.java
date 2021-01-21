@@ -1,7 +1,6 @@
 package kr.co.eatgo.application;
 
 import kr.co.eatgo.domain.*;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,7 +39,7 @@ class RestaurantServiceTests {
 
         restaurants.add(restaurant);
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Kimchi"));
+        menuItems.add(MenuItem.builder().name("Kimchi").build());
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
         given(restaurantRepository.findAll()).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(java.util.Optional.of(restaurant));
@@ -62,12 +61,9 @@ class RestaurantServiceTests {
     @Test
     public void getRestaurantWithNotFound(){
 
-
         Throwable exception = assertThrows(RestaurantNotFoundException.class, () -> {
             restaurantService.getRestaurantById(404L);
         });
-
-
 
     }
 
