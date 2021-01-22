@@ -2,7 +2,6 @@ package kr.co.eatgo.application;
 
 import kr.co.eatgo.domain.MenuItem;
 import kr.co.eatgo.domain.MenuItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +11,8 @@ import java.util.List;
 @Transactional
 public class MenuItemService {
 
-    MenuItemRepository menuItemRepository;
+    private final MenuItemRepository menuItemRepository;
 
-    @Autowired
     public MenuItemService(MenuItemRepository menuItemRepository){
         this.menuItemRepository = menuItemRepository;
     }
