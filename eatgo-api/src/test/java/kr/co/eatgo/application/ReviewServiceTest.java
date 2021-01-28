@@ -26,7 +26,7 @@ public class ReviewServiceTest {
     @Test
     public void createReviewTest(){
         Review review = Review.builder().name("Bob Zip").description("GoodGood Very Good").score(5).build();
-        reviewService.createReview(review);
+        reviewService.createReview(1004L,review);
         verify(reviewRepository).save(any());
 
     }

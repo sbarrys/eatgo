@@ -26,9 +26,9 @@ public class ReviewController {
             @PathVariable("restaurantId")Long restaurantId ,
             @Valid  @RequestBody Review requestReview
     ) throws URISyntaxException {
-        Review review = reviewService.createReview(requestReview);
+        Review review = reviewService.createReview(restaurantId,requestReview);
         return ResponseEntity.created(
                 new URI("/restaurants/"+restaurantId+"/reviews/"
-                        +review.getId())).body("{}"); //JSON 이니까 응답을 이렇게 준다.
+                        +review)).body("{}"); //JSON 이니까 응답을 이렇게 준다.
     }
 }

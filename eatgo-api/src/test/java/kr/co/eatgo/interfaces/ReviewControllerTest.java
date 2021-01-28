@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ReviewController.class)
 @RunWith(SpringRunner.class)//Mockbean 사용할 때, 객체를 가져다준다.
@@ -29,16 +28,16 @@ public class ReviewControllerTest {
     @Test
     public void create() throws Exception {
         Review review = Review.builder().name("Bob Zip").description("GoodGood Very Good").score(5).build();
-        given(reviewService.createReview(review)).willReturn(
+        given(reviewService.createReview(eq(1004L),any())).willReturn(
                 Review.builder().id(1L).name("Bob Zip").description("GoodGood Very Good").score(5).build());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/restaurants/1/reviews")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":1,\"name\":\"Bob Zip\", \"score\":5, \"description\":\"GoodGood Very Good\"}")
                 ).andExpect(status().isCreated())
-                .andExpect(content().string("/restaurants/1/reviews/1004"));
+                .andExpect(header().string("location","/restaurants/1/reviews/1004"));
 
-        verify(reviewService,times(1)).createReview(any());
+        verify(reviewService,times(1)).createReview(eq(1004L),any());
     }
 
 }
