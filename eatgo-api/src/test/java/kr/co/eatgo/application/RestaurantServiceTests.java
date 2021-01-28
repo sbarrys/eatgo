@@ -14,7 +14,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 class RestaurantServiceTests {
 
@@ -25,6 +27,9 @@ class RestaurantServiceTests {
 
     @Mock
     private MenuItemRepository  menuItemRepository;
+
+    @Mock
+    private ReviewRepository reviewRepository;
 
     @BeforeEach
     public void setUp(){
@@ -44,18 +49,27 @@ class RestaurantServiceTests {
         given(restaurantRepository.findAll()).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(java.util.Optional.of(restaurant));
 
-
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(Review.builder().name("Kim").score(1).description("Bad").build());
+        given(reviewRepository.findAllByRestaurantId(1004L )).willReturn(reviews);
         //@Mock으로 했기때문에 구현하지 않아도됨
 //        restaurantRepository = new RestaurantRepositoryImpl();
 //        menuItemRepository =new MenuItemRepositoryImpl();
-        restaurantService = new RestaurantService(menuItemRepository,restaurantRepository);
+        restaurantService = new RestaurantService(menuItemRepository,restaurantRepository,reviewRepository);
     }
 
     @Test
     public void getRestaurant(){
         Restaurant restaurant= restaurantService.getRestaurantById(1004L);
-        assertThat(restaurant.getId(),is(1004L));
 
+        assertThat(restaurant.getId(),is(1004L));
+        verify(menuItemRepository).findAllByRestaurantId(eq(1004L));
+        MenuItem menuItem = restaurant.getMenuItems().get(0);
+        assertThat(menuItem.getName(),is("Kimchi"));
+
+        verify(reviewRepository).findAllByRestaurantId(eq(1004L));
+        Review review =restaurant.getReviews().get(0);
+        assertThat(review.getDescription(),is("Bad"));
     }
 
     @Test

@@ -4,6 +4,7 @@ import kr.co.eatgo.application.RestaurantService;
 import kr.co.eatgo.domain.MenuItem;
 import kr.co.eatgo.domain.Restaurant;
 import kr.co.eatgo.domain.RestaurantNotFoundException;
+import kr.co.eatgo.domain.Review;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,12 @@ class RestaurantControllerTests {
         given(restaurantService.getRestaurantById(2004L)).willReturn(restaurant);
         given(restaurantService.getRestaurantById(1004L)).willReturn(restaurant2);
 
+        Review review=  Review.builder()
+                            .name("KIM")
+                            .score(5)
+                            .description("Great")
+                            .build();
+        restaurant.setReviews(Arrays.asList(review));
         mvc.perform(get("/restaurants/2004"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -80,7 +87,8 @@ class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
-                ));
+                ))
+                .andExpect(content().string( containsString("Great")));
     }
     @Test
     public void detailWithNotFound() throws Exception {
